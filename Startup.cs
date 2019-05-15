@@ -35,10 +35,22 @@ namespace TodoApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         
             //Register the swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c => 
+            services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new Info
             {
-                c.SwaggerDoc("v1", new Info {Title = "Todo Api", Version = "v1"});
+                Version = "v1",
+                Title = "ToDo API",
+                Description = "A simple example ASP.NET Core Web API",
+                TermsOfService = "None",
+                Contact = new Contact
+                {
+                    Name = "Carlos Almeida",
+                    Email = string.Empty,
+                    Url = "https://www.linkedin.com/in/carlos-vaz-almeida/"
+                }
             });
+        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +74,7 @@ namespace TodoApi
             app.UseSwaggerUI(c => 
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo Api V1");
+                c.RoutePrefix = string.Empty;
             });
 
             app.UseDefaultFiles();
