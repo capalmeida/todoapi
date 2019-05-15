@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TodoApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 
 namespace TodoApi
@@ -32,6 +33,12 @@ namespace TodoApi
                 opt.UseInMemoryDatabase("TodoList"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        
+            //Register the swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c => 
+            {
+                c.SwaggerDoc("v1", new Info {Title = "Todo Api", Version = "v1"});
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +53,16 @@ namespace TodoApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            //Enable middleware to serve swagger-ui (html, js, css, etc.),
+            //specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo Api V1");
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
